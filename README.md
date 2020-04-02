@@ -78,7 +78,7 @@ celery –A db_monitor worker –l info
 celery –A db_monitor beat –l info
 
 #### 7. 前端配置
-请参考：[db_monitor_vue](https://github.com/gumengkai/db_monitor_vue)
+请参考：[db_monitor_vue](https://github.com/lishuo3331/db_monitor_vue)
 
-grant.sql & table.sql & procedure.sql
+原始链接：https://github.com/gumengkai/db_monitor
 
