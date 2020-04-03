@@ -47,7 +47,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',  
 		'NAME': 'db_monitor',  
 		'USER': 'root',  
-		'PASSWORD': 'mysqld',  
+		'PASSWORD': '123456',  
         'HOST':'127.0.0.1',  
 		'PORT': '3306',  
     }
