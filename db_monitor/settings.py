@@ -93,15 +93,15 @@ AUTHENTICATION_BACKENDS = ('system.views.CustomBackend',)  ## 重新登录验证
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
+# 数据库配置
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '192.168.48.50',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
-        'NAME': 'db_monitor_dev',
+        'NAME': 'db_monitor',
         'USER': 'root',
-        'PASSWORD': 'mysqld',
+        'PASSWORD': '123456',
     }
 }
 
