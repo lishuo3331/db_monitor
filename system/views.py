@@ -79,26 +79,16 @@ class Menu(APIView):
                 },
                 "component": 'Main',
                 "children": [
-                    {
-                        'path': 'oracle-list',
-                        'name': 'oracle-list',
-                        'meta': {
-                            'access': ['assets.view_oraclelist'],
-                            'icon': 'ios-menu',
-                            'title': 'Oracle数据库'
-                        },
-                        'component': 'assets/oracle-list'
-                    },
-                    {
-                        'path': 'mysql-list',
-                        'name': 'mysql-list',
-                        'meta': {
-                            'access': ['assets.view_mysqllist'],
-                            'icon': 'ios-menu',
-                            'title': 'MySQL数据库'
-                        },
-                        'component': 'assets/mysql-list'
-                    },
+                    # {
+                    #     'path': 'oracle-list',
+                    #     'name': 'oracle-list',
+                    #     'meta': {
+                    #         'access': ['assets.view_oraclelist'],
+                    #         'icon': 'ios-menu',
+                    #         'title': 'Linux主机'
+                    #     },
+                    #     'component': 'assets/oracle-list'
+                    # },
                     {
                         'path': 'linux-list',
                         'name': 'linux-list',
@@ -110,15 +100,25 @@ class Menu(APIView):
                         'component': 'assets/linux-list'
                     },
                     {
-                        'path': 'redis-list',
-                        'name': 'redis-list',
+                        'path': 'mysql-list',
+                        'name': 'mysql-list',
                         'meta': {
-                            'access': ['assets.view_redislist'],
+                            'access': ['assets.view_mysqllist'],
                             'icon': 'ios-menu',
-                            'title': 'Redis'
+                            'title': 'Windows主机'
                         },
-                        'component': 'assets/redis-list'
-                    }
+                        'component': 'assets/mysql-list'
+                    },
+                    # {
+                    #     'path': 'redis-list',
+                    #     'name': 'redis-list',
+                    #     'meta': {
+                    #         'access': ['assets.view_redislist'],
+                    #         'icon': 'ios-menu',
+                    #         'title': 'Redis'
+                    #     },
+                    #     'component': 'assets/redis-list'
+                    # }
                 ]
             },
             {
@@ -130,36 +130,26 @@ class Menu(APIView):
                 },
                 "component": 'Main',
                 "children": [
-                    {
-                        'path': 'oracle',
-                        'name': 'oracle',
-                        'meta': {
-                            'icon': 'ios-menu',
-                            'title': 'Oracle列表',
-                            'access': ['oracle.view_oraclestat'],
-                        },
-                        'component': 'oracle/stat-list'
-                    },
-                    {
-                        'path': 'mysql',
-                        'name': 'mysql',
-                        'meta': {
-                            'icon': 'ios-menu',
-                            'title': 'MySQL列表',
-                            'access': ['mysql.view_mysqlstat'],
-                        },
-                        'component': 'mysql/stat-list'
-                    },
-                    {
-                        'path': 'redis',
-                        'name': 'redis',
-                        'meta': {
-                            'icon': 'ios-menu',
-                            'title': 'Redis列表',
-                            'access': ['rds.view_redisstat'],
-                        },
-                        'component': 'redis/stat-list'
-                    },
+                    # {
+                    #     'path': 'oracle',
+                    #     'name': 'oracle',
+                    #     'meta': {
+                    #         'icon': 'ios-menu',
+                    #         'title': 'Oracle列表',
+                    #         'access': ['oracle.view_oraclestat'],
+                    #     },
+                    #     'component': 'oracle/stat-list'
+                    # },
+                    # {
+                    #     'path': 'redis',
+                    #     'name': 'redis',
+                    #     'meta': {
+                    #         'icon': 'ios-menu',
+                    #         'title': 'Redis列表',
+                    #         'access': ['rds.view_redisstat'],
+                    #     },
+                    #     'component': 'redis/stat-list'
+                    # },
                     {
                         'path': 'linux',
                         'name': 'linux',
@@ -169,6 +159,16 @@ class Menu(APIView):
                             'access': ['oracle.view_oraclestat'],
                         },
                         'component': 'linux/stat-list'
+                    },
+                    {
+                        'path': 'mysql',
+                        'name': 'mysql',
+                        'meta': {
+                            'icon': 'ios-menu',
+                            'title': 'Windows列表',
+                            'access': ['mysql.view_mysqlstat'],
+                        },
+                        'component': 'mysql/stat-list'
                     }
                 ],
 
