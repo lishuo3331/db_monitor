@@ -14,9 +14,6 @@
     
 - Vue.js 2.9
     - iview 3.4
-  
-用户名：admin 
-密码：111111
 
 ## 安装部署
 #### 1. 安装python3.6(略)
@@ -34,7 +31,7 @@ create database db_monitor;
 #### 5. 项目配置
 
 ##### 下载源代码
-git clone https://github.com/gumengkai/db_monitor
+git clone https://github.com/lishuo3331/db_monitor
 
 ##### 安装依赖包
 pip install -r requirements.txt
