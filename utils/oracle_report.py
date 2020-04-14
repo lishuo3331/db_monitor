@@ -62,10 +62,7 @@ class OracleReport(OracleBase):
         return [(ret.read(),)]
 
 
-    def get_ash(self,dbid,instance_num,begin_snap,end_snap):
-
-        start_time = datetime.strptime(begin_snap, '%Y-%m-%d %H:%M')
-        end_time = datetime.strptime(end_snap, '%Y-%m-%d %H:%M')
+    def get_ash(self,dbid,instance_num,report_begin_time,report_end_time):
 
         sql = """select output from table (
                         DBMS_WORKLOAD_REPOSITORY.ASH_REPORT_HTML(
@@ -74,7 +71,7 @@ class OracleReport(OracleBase):
                         TO_DATE('{}','YYYY-MM-DD HH24:MI:SS'),
                         TO_DATE('{}','YYYY-MM-DD HH24:MI:SS')
                      ))
-                """.format(dbid,instance_num,start_time,end_time)
+                """.format(dbid,instance_num,report_begin_time,report_end_time)
 
         res = super().query_all(sql,self.db_conn)
         return res
@@ -95,9 +92,9 @@ class OracleReport(OracleBase):
         res = super().query_one(sql,self.db_conn)
         dbid = res[0]
 
-        if report_type == 'addm':
-            report_begin_time = begin_snap
-            report_end_time = end_snap
+        if report_type == 'ash':
+            report_begin_time = datetime.strptime(begin_snap,"%Y-%m-%dT%H:%M:%S.%fZ") + timedelta(hours=8)
+            report_end_time = datetime.strptime(end_snap,"%Y-%m-%dT%H:%M:%S.%fZ")  + timedelta(hours=8)
         else:
             sql = "select to_char(a.end_interval_time,'yyyy-mm-dd hh24:mi:ss') from dba_hist_snapshot a where a.snap_id=%s" % begin_snap
             res = super().query_one(sql,self.db_conn)
@@ -111,7 +108,7 @@ class OracleReport(OracleBase):
         elif report_type == 'addm':
             data = self.get_addm(instance_name, dbid, instance_num, begin_snap, end_snap)
         else:
-            data = self.get_ash(dbid, instance_num, begin_snap, end_snap)
+            data = self.get_ash(dbid, instance_num, report_begin_time, report_end_time)
 
         if report_type == 'addm':
             suffix = 'txt'
@@ -126,16 +123,16 @@ class OracleReport(OracleBase):
                 report_type, dbid, instance_num, begin_snap, end_snap, suffix)
 
         # report_file = os.getcwd() +  '/oracle/report/' +report_name
-        report_file = os.getcwd() + '/report/' + report_name
+        report_file = os.getcwd() + '/templates/report/oracle/' + report_name
         self.save_report(report_file, data)
         insert_sql = " INSERT INTO oracle_report(tags,begin_time,end_time,report_type,file_path,status,create_time) " \
                      "values('{}','{}','{}','{}','{}','0','{}') ".format(
-        self.tags, report_begin_time, report_end_time, report_type, report_file,now())
+        self.tags, report_begin_time, report_end_time, report_type, 'report/oracle/'+report_name,now())
         mysql_exec(insert_sql, '')
 
 
 if __name__ == '__main__':
-    tags = 'orcl19c_pdb1'
+    tags = 'pdb1'
     oracle_params = {
         'host': '192.168.48.60',
         'port': 1521,
@@ -146,10 +143,11 @@ if __name__ == '__main__':
         'user_cdb': 'c##dbmon',
         'password_cdb': 'oracle'
     }
-    report_type = 'awr'
-    begin_snap = '1282'
-    end_snap = '1283'
+    report_type = 'addm'
+    begin_snap = '1958'
+    end_snap = '1960'
     db_conn = OracleBase(oracle_params).connection()
-    oracle_report = OracleReport(db_conn,tags,oracle_params)
-    oracle_report.get_report(report_type,1282,1283)
+    db_conn_cdb = OracleBase(oracle_params).connection_cdb()
+    oracle_report = OracleReport(db_conn_cdb,tags,oracle_params)
+    oracle_report.get_report(report_type,1958,1960)
 
