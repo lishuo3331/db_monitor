@@ -16,19 +16,15 @@
     - iview 3.4
 
 ## 安装部署
-#### 1. 安装python3.6(略)
+#### 安装python3.6(略)
 
-#### 2. 安装mysql5.7(略)
+#### 安装mysql5.7(略)
 
 注意字符集：utf-8
 
 create database db_monitor; 
 
-#### 3. 安装redis3.2(略)
-
-#### 4. 安装oracle instant client(略)
-
-#### 5. 项目配置
+#### 项目配置
 
 ##### 下载源代码
 git clone https://github.com/lishuo3331/db_monitor
@@ -49,12 +45,6 @@ DATABASES = {
 		'PORT': '3306',  
     }
 }
-
-Redis：
-
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
-
-CELERY_BROKER_URL = 'redis://localhost:6379/2'
 
 发送邮件配置：
 
