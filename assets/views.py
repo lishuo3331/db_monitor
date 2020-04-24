@@ -48,6 +48,18 @@ class ApiLinuxDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = LinuxListSerializer
     permission_classes = (permissions.DjangoModelPermissions,)
 
+class ApiWindowsList(generics.ListCreateAPIView):
+    queryset = WindowsList.objects.get_queryset().order_by('id')
+    serializer_class = LinuxListSerializer
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    filter_fields = ('tags', 'host','linux_version')
+    search_fields = ('tags', 'host',)
+    permission_classes = (permissions.DjangoModelPermissions,)  # 继承 django的权限
+
+class ApiWindowsDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = WindowsList.objects.get_queryset().order_by('id')
+    serializer_class = LinuxListSerializer
+    permission_classes = (permissions.DjangoModelPermissions,)
 
 class ApiRedisList(generics.ListCreateAPIView):
     queryset = RedisList.objects.get_queryset().order_by('id')

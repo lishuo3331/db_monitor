@@ -17,6 +17,11 @@ class LinuxListSerializer(serializers.ModelSerializer):
         model = LinuxList
         fields = '__all__'
 
+class WindowsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WindowsList
+        fields = '__all__'
+
 class RedisListSerializer(serializers.ModelSerializer):
     class Meta:
         model = RedisList

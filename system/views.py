@@ -100,14 +100,14 @@ class Menu(APIView):
                         'component': 'assets/linux-list'
                     },
                     {
-                        'path': 'mysql-list',
-                        'name': 'mysql-list',
+                        'path': 'windows-list',
+                        'name': 'windows-list',
                         'meta': {
-                            'access': ['assets.view_mysqllist'],
+                            'access': ['assets.view_windowslist'],
                             'icon': 'ios-menu',
                             'title': 'Windows主机'
                         },
-                        'component': 'assets/mysql-list'
+                        'component': 'assets/windows-list'
                     },
                     # {
                     #     'path': 'redis-list',
