@@ -11,5 +11,6 @@ urlpatterns = [
     path('api/alert-log', views.ApiAlertLog.as_view()),
     path('api/alarm-conf', views.ApiAlarmConf.as_view()),
     path('api/alarm-conf/<int:pk>', views.ApiAlarmConfDetail.as_view()),
+    #首页获取告警信息
     path('api/alarm-info', views.ApiAlarmInfo.as_view()),
 ]

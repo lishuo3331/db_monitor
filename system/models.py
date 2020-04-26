@@ -58,19 +58,29 @@ class AlarmConf(models.Model):
         verbose_name = "告警配置"
         verbose_name_plural = verbose_name
 
+# class AlarmInfo(models.Model):
+#     tags = models.CharField("标签",max_length=32)
+#     url = models.CharField("连接地址",max_length=255)
+#     alarm_type = models.CharField("告警类型",max_length=255)
+#     alarm_header = models.CharField("告警标题",max_length=255)
+#     alarm_content = models.TextField("告警标题",)
+#     alarm_time = models.DateTimeField("告警时间")
+#
+#     class Meta:
+#         db_table = 'alarm_info'
+#         verbose_name = "告警信息"
+#         verbose_name_plural = verbose_name
+
+#首页告警信息modelya
 class AlarmInfo(models.Model):
-    tags = models.CharField("标签",max_length=32)
-    url = models.CharField("连接地址",max_length=255)
-    alarm_type = models.CharField("告警类型",max_length=255)
-    alarm_header = models.CharField("告警标题",max_length=255)
-    alarm_content = models.TextField("告警标题",)
+    do_main = models.CharField("虚拟机域",max_length=45)
+    alarm_type = models.CharField("告警类型",max_length=45)
     alarm_time = models.DateTimeField("告警时间")
 
     class Meta:
-        db_table = 'alarm_info'
+        db_table = 'alarm'
         verbose_name = "告警信息"
         verbose_name_plural = verbose_name
-
 class AlarmInfoHis(models.Model):
     tags = models.CharField("标签",max_length=32)
     url = models.CharField("连接地址",max_length=255)

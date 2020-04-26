@@ -559,6 +559,7 @@ class ApiAlarmInfo(generics.ListCreateAPIView):
         if tags:
             return AlarmInfo.objects.filter(tags=tags).order_by('id')
         else:
+            print('index return alarm info ')
             return AlarmInfo.objects.all()
     serializer_class = AlarmInfoSerializer
     permission_classes = (permissions.DjangoModelPermissions,)

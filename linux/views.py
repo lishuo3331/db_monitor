@@ -17,7 +17,7 @@ class ApiLinuxStat(generics.ListCreateAPIView):
     serializer_class = LinuxStatSerializer
     filter_backends = (DjangoFilterBackend,)
     permission_classes = (permissions.DjangoModelPermissions,)
-
+#
 class ApiLinuxStatHis(generics.ListCreateAPIView):
     def get_queryset(self):
         tags = self.request.query_params.get('tags', None)
