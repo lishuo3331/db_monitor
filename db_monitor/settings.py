@@ -46,10 +46,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_swagger',
     'assets.apps.AssetsConfig',
-    'oracle.apps.OracleConfig',
     'linux.apps.LinuxConfig',
-    'mysql.apps.MysqlConfig',
-    'rds.apps.RdsConfig',
+    'windows.apps.WindowsConfig'
 ]
 
 GRAPHENE = {
@@ -136,8 +134,8 @@ LANGUAGE_CODE = 'zh-Hans'
 TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
-USE_L10N = False
-USE_TZ = True
+USE_L10N = True
+
 DATETIME_FORMAT = 'Y-m-d H:i:s'
 DATE_FORMAT = 'Y-m-d'
 
@@ -278,7 +276,7 @@ SWAGGER_SETTINGS = {
 CHECK_LOG_DIR = os.path.join(BASE_DIR, 'logs')
 
 # send email
-IS_SEND_EAMIL = 1 #是否发送告警邮件，0：不发送 1：发送
+IS_SEND_EMAIL = 1 #是否发送告警邮件，0：不发送 1：发送
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #一般不需要修改
 EMAIL_HOST = 'smtp.163.com'
 EMAIL_PORT = 25

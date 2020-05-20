@@ -8,7 +8,7 @@ class LinuxStat(models.Model):
     port = models.IntegerField("ssh端口号",default=22)
     hostname = models.CharField("主机名",max_length=64,blank=True,null=True)
     ipinfo = models.CharField("IP地址信息",max_length=255,blank=True, null=True)
-    windows_version = models.CharField("linux版本",max_length=64,blank=True,null=True)
+    windows_version = models.CharField("windows版本",max_length=64,blank=True,null=True)
     updays = models.FloatField("启动天数",blank=True, null=True)
     kernel = models.CharField("内核版本",max_length=64,blank=True,null=True)
     frame = models.CharField("系统架构",max_length=64,blank=True,null=True)
@@ -55,12 +55,12 @@ class LinuxStat(models.Model):
     softirq = models.FloatField(blank=True, null=True)
     status = models.IntegerField("linux主机连接状态 0成功 1失败",blank=True, null=True)
     check_time = models.DateTimeField("采集时间",default=timezone.now,blank=True,null=True)
-
+    windows_name = models.CharField("虚拟域", max_length=45, null=True)
     def __str__(self):
-        return self.tags
+        return self.tagss
 
     class Meta:
-        db_table = 'linux_stat'
+        # db_table = 'windows_stat'
         verbose_name = "Linux主机采集数据"
         verbose_name_plural = verbose_name
 
@@ -80,7 +80,7 @@ class LinuxDisk(models.Model):
         return self.tags
 
     class Meta:
-        db_table = 'linux_disk'
+        db_table = 'windows_disk'
         verbose_name = "Linux磁盘信息采集数据"
         verbose_name_plural = verbose_name
 
@@ -111,7 +111,7 @@ class LinuxIoStat(models.Model):
         return self.tags
 
     class Meta:
-        db_table = 'linux_io_stat'
+        db_table = 'windows_io_stat'
         verbose_name = "Linux磁盘IO信息"
         verbose_name_plural = verbose_name
 
@@ -174,7 +174,7 @@ class LinuxStatHis(models.Model):
         return self.tags
 
     class Meta:
-        db_table = 'linux_stat_his'
+        db_table = 'windows_stat_his'
         verbose_name = "Linux主机采集数据"
         verbose_name_plural = verbose_name
 
@@ -194,7 +194,7 @@ class LinuxDiskHis(models.Model):
         return self.tags
 
     class Meta:
-        db_table = 'linux_disk_his'
+        db_table = 'windows_disk_his'
         verbose_name = "Linux磁盘信息采集数据"
         verbose_name_plural = verbose_name
 
@@ -225,6 +225,6 @@ class LinuxIoStatHis(models.Model):
         return self.tags
 
     class Meta:
-        db_table = 'linux_io_stat_his'
+        db_table = 'windows_io_stat_his'
         verbose_name = "Linux磁盘IO信息"
         verbose_name_plural = verbose_name

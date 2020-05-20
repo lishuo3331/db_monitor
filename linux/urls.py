@@ -5,6 +5,7 @@ app_name = "linux"
 
 urlpatterns = [
     path('api/linux-stat-list', views.ApiLinuxStatList.as_view()),
+    path('api/windows-stat-list', views.ApiWindowsStatList.as_view()),
     path('api/linux-stat', views.ApiLinuxStat.as_view()),
     path('api/linux-stat-his', views.ApiLinuxStatHis.as_view()),
     path('api/linux-disk', views.ApiLinuxDisk.as_view()),

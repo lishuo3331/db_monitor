@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import AlertLog,AlarmConf,AlarmInfo
+from .models import AlertLog, AlarmConf, AlarmInfo, ProcessInfo
+
 
 class AlertLogSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,4 +17,9 @@ class AlarmConfSerializer(serializers.ModelSerializer):
 class AlarmInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = AlarmInfo
+        fields = '__all__'
+
+class ProcessInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProcessInfo
         fields = '__all__'

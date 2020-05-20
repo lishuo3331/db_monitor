@@ -11,4 +11,6 @@ def my_send_email(header,content):
     from_user = settings.EMAIL_HOST_USER
     to_user = settings.EMAIL_TO_USER
     send_mail(header,content,from_user,to_user,)
-
+    is_send = settings.IS_SEND_EMAIL
+    if is_send == 1:
+        send_mail(header, content, from_user, to_user, )

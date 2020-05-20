@@ -55,7 +55,8 @@ class LinuxStat(models.Model):
     softirq = models.FloatField(blank=True, null=True)
     status = models.IntegerField("linux主机连接状态 0成功 1失败",blank=True, null=True)
     check_time = models.DateTimeField("采集时间",default=timezone.now,blank=True,null=True)
-
+    linux_name= models.CharField("虚拟域",max_length=45,null=True)
+    os = models.CharField(max_length=45)
     def __str__(self):
         return self.tags
 
@@ -63,7 +64,67 @@ class LinuxStat(models.Model):
         db_table = 'linux_stat'
         verbose_name = "Linux主机采集数据"
         verbose_name_plural = verbose_name
+class WindowsStat(models.Model):
+    tags = models.CharField("标签",max_length=32)
+    host = models.CharField("主机ip",max_length=32)
+    port = models.IntegerField("ssh端口号",default=22)
+    hostname = models.CharField("主机名",max_length=64,blank=True,null=True)
+    ipinfo = models.CharField("IP地址信息",max_length=255,blank=True, null=True)
+    windows_version = models.CharField("windows版本",max_length=64,blank=True,null=True)
+    updays = models.FloatField("启动天数",blank=True, null=True)
+    kernel = models.CharField("内核版本",max_length=64,blank=True,null=True)
+    frame = models.CharField("系统架构",max_length=64,blank=True,null=True)
+    cpu_mode = models.CharField("CPU型号",max_length=64,blank=True, null=True)
+    cpu_cache = models.CharField("CPU cache",max_length=64,blank=True, null=True)
+    processor = models.CharField("CPU核心数",max_length=64,blank=True, null=True)
+    cpu_speed = models.CharField("CPU频率",max_length=64,blank=True, null=True)
+    recv_kbps = models.FloatField("接收流量",blank=True, null=True)
+    send_kbps = models.FloatField("发送流量",blank=True, null=True)
+    load1 = models.FloatField(blank=True, null=True)
+    load5 = models.FloatField(blank=True, null=True)
+    load15 = models.FloatField(blank=True, null=True)
+    cpu_sys = models.FloatField(blank=True, null=True)
+    cpu_iowait = models.FloatField(blank=True, null=True)
+    cpu_user = models.FloatField(blank=True, null=True)
+    cpu_used = models.FloatField("CPU使用率",blank=True, null=True)
+    memtotal = models.FloatField("内存总大小",blank=True, null=True)
+    mem_used = models.FloatField("内存使用率",blank=True, null=True)
+    mem_cache = models.FloatField(blank=True, null=True)
+    mem_buffer = models.FloatField(blank=True, null=True)
+    mem_free = models.FloatField(blank=True, null=True)
+    mem_used_mb = models.FloatField(blank=True, null=True)
+    swap_used = models.FloatField(blank=True, null=True)
+    swap_free = models.FloatField(blank=True, null=True)
+    swapin = models.FloatField(blank=True, null=True)
+    swapout = models.FloatField(blank=True, null=True)
+    pgin = models.FloatField(blank=True, null=True)
+    pgout = models.FloatField(blank=True, null=True)
+    pgfault = models.FloatField(blank=True, null=True)
+    pgmjfault = models.FloatField(blank=True, null=True)
+    tcp_close = models.FloatField(blank=True, null=True)
+    tcp_timewait = models.FloatField(blank=True, null=True)
+    tcp_connected = models.FloatField(blank=True, null=True)
+    tcp_syn = models.FloatField(blank=True, null=True)
+    tcp_listen = models.FloatField(blank=True, null=True)
+    iops = models.FloatField(blank=True, null=True)
+    read_mb = models.FloatField(blank=True, null=True)
+    write_mb = models.FloatField(blank=True, null=True)
+    proc_new = models.FloatField(blank=True, null=True)
+    proc_running = models.FloatField(blank=True, null=True)
+    proc_block = models.FloatField(blank=True, null=True)
+    intr = models.FloatField(blank=True, null=True)
+    ctx = models.FloatField(blank=True, null=True)
+    softirq = models.FloatField(blank=True, null=True)
+    status = models.IntegerField("linux主机连接状态 0成功 1失败",blank=True, null=True)
+    check_time = models.DateTimeField("采集时间",default=timezone.now,blank=True,null=True)
+    windows_name = models.CharField("虚拟域", max_length=45, null=True)
+    def __str__(self):
+        return self.tagss
 
+    class Meta:
+        db_table = 'windows_stat'
+        verbose_name = "Linux主机采集数据"
+        verbose_name_plural = verbose_name
 
 class LinuxDisk(models.Model):
     tags = models.CharField("标签",max_length=32)

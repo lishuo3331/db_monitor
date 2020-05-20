@@ -46,6 +46,15 @@ class ApiLinuxStatList(generics.ListCreateAPIView):
     search_fields = ('tags', 'host',)
     permission_classes = (permissions.DjangoModelPermissions,)
 
+# all instance
+class ApiWindowsStatList(generics.ListCreateAPIView):
+    queryset = WindowsStat.objects.get_queryset().order_by('-status')
+    serializer_class = WindowsStatSerializer
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    filter_fields = ('tags', 'host','status')
+    search_fields = ('tags', 'host',)
+    permission_classes = (permissions.DjangoModelPermissions,)
+
 class ApiLinuxDisk(generics.ListCreateAPIView):
     def get_queryset(self):
         tags = self.request.query_params.get('tags', None)

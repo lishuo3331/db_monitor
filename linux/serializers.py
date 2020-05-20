@@ -6,6 +6,11 @@ class LinuxStatSerializer(serializers.ModelSerializer):
         model = LinuxStat
         fields = '__all__'
 
+class WindowsStatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WindowsStat
+        fields = '__all__'
+
 class LinuxStatHisSerializer(serializers.ModelSerializer):
     class Meta:
         model = LinuxStatHis

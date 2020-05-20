@@ -79,8 +79,24 @@ class AlarmInfo(models.Model):
 
     class Meta:
         db_table = 'alarm'
-        verbose_name = "告警信息"
+        verbose_name = "告警消息"
         verbose_name_plural = verbose_name
+
+class ProcessInfo(models.Model):
+    pid = models.CharField("进程id",max_length=45)
+    pname = models.CharField("进程名称",max_length=45)
+    pdomain = models.CharField("虚拟机域",max_length=45)
+    tag = models.CharField("状态",max_length=45)
+    ppid = models.CharField("父进程",max_length=45)
+    upid = models.CharField("子进程",max_length=45)
+    exectime = models.DateTimeField("执行时间")
+
+    class Meta:
+        db_table = 'process_info'
+        verbose_name = "进程列表"
+        # verbose_name = "告警消息"
+        verbose_name_plural = verbose_name
+
 class AlarmInfoHis(models.Model):
     tags = models.CharField("标签",max_length=32)
     url = models.CharField("连接地址",max_length=255)

@@ -7,14 +7,14 @@ from rest_framework import permissions
 from rest_framework.authtoken.models import Token
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth.backends import ModelBackend
-from system.models import Users
+from system.models import Users, ProcessInfo
 from django.db.models import Q
 from .models import AlertLog,AlarmConf,AlarmInfo
 from rest_framework import permissions
 from rest_framework import generics
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
-from .serializers import AlertLogSerializer,AlarmConfSerializer,AlarmInfoSerializer
+from .serializers import AlertLogSerializer, AlarmConfSerializer, AlarmInfoSerializer, ProcessInfoSerializer
 
 logger = logging.getLogger('system')
 
@@ -70,57 +70,58 @@ class Menu(APIView):
 
     def post(self, request):
         result = [
-            {
-                "path": '/assets',
-                "name": 'assets',
-                "meta": {
-                    "icon": 'ios-cloud',
-                    "title": '资源管理'
-                },
-                "component": 'Main',
-                "children": [
-                    # {
-                    #     'path': 'oracle-list',
-                    #     'name': 'oracle-list',
-                    #     'meta': {
-                    #         'access': ['assets.view_oraclelist'],
-                    #         'icon': 'ios-menu',
-                    #         'title': 'Linux主机'
-                    #     },
-                    #     'component': 'assets/oracle-list'
-                    # },
-                    {
-                        'path': 'linux-list',
-                        'name': 'linux-list',
-                        'meta': {
-                            'access': ['assets.view_linuxlist'],
-                            'icon': 'ios-menu',
-                            'title': 'Linux主机'
-                        },
-                        'component': 'assets/linux-list'
-                    },
-                    {
-                        'path': 'windows-list',
-                        'name': 'windows-list',
-                        'meta': {
-                            'access': ['assets.view_windowslist'],
-                            'icon': 'ios-menu',
-                            'title': 'Windows主机'
-                        },
-                        'component': 'assets/windows-list'
-                    },
-                    # {
-                    #     'path': 'redis-list',
-                    #     'name': 'redis-list',
-                    #     'meta': {
-                    #         'access': ['assets.view_redislist'],
-                    #         'icon': 'ios-menu',
-                    #         'title': 'Redis'
-                    #     },
-                    #     'component': 'assets/redis-list'
-                    # }
-                ]
-            },
+            # {
+            #     "path": '/assets',
+            #     "name": 'assets',
+            #     "meta": {
+            #         "icon": 'ios-cloud',
+            #         "title": '实例列表'
+            #     },
+            #     "component": 'Main',
+            #     "children": [
+            #
+            #         {
+            #             'path': 'linux-list',
+            #             'name': 'linux-list',
+            #             'meta': {
+            #                 'access': ['assets.view_linuxlist'],
+            #                 'icon': 'ios-menu',
+            #                 'title': 'Linux主机'
+            #             },
+            #             'component': 'assets/linux-list'
+            #         },
+            #         # {
+            #         #     'path': 'windows-list',
+            #         #     'name': 'windows-list',
+            #         #     'meta': {
+            #         #         'access': ['assets.view_oraclelist'],
+            #         #         'icon': 'ios-menu',
+            #         #         'title': 'Windows主机'
+            #         #     },
+            #         #     'component': 'assets/oracle-list'
+            #         # },
+            #         {
+            #             'path': 'windows-list',
+            #             'name': 'windows-list',
+            #             'meta': {
+            #                 'access': ['assets.view_linuxlist'],
+            #                 'icon': 'ios-menu',
+            #                 'title': 'Windows主机'
+            #             },
+            #             'component': 'assets/windows-list'
+            #         }
+            #         # {
+            #         #     'path': 'redis-list',
+            #         #     'name': 'redis-list',
+            #         #     'meta': {
+            #         #         'access': ['assets.view_redislist'],
+            #         #         'icon': 'ios-menu',
+            #         #         'title': 'Redis'
+            #         #     },
+            #         #     'component': 'assets/redis-list'
+            #         # }
+            #     ]
+            # },
             {
                 "path": '/monlist',
                 "name": '实例列表',
@@ -161,17 +162,48 @@ class Menu(APIView):
                         'component': 'linux/stat-list'
                     },
                     {
-                        'path': 'mysql',
-                        'name': 'mysql',
+                        'path': 'windows',
+                        'name': 'windows',
                         'meta': {
                             'icon': 'ios-menu',
                             'title': 'Windows列表',
-                            'access': ['mysql.view_mysqlstat'],
+                            'access': ['oracle.view_oraclestat'],
                         },
-                        'component': 'mysql/stat-list'
+                        'component': 'windows/stat-list'
                     }
                 ],
 
+            },
+            {
+                "path": '/process',
+                "name": 'process',
+                "meta": {
+                    "icon": 'ios-warning',
+                    "title": '进程列表'
+                },
+                "component": 'Main',
+                "children": [
+                    {
+                        'path': 'preocess-info',
+                        'name': 'preocess-info',
+                        'meta': {
+                            'access': ['system.view_alarminfo'],
+                            'icon': 'ios-menu',
+                            'title': '进程列表'
+                        },
+                        'component': 'system/process-info'
+                    },
+                    # {
+                    #     'path': 'alarm-conf',
+                    #     'name': 'alarm-conf',
+                    #     'meta': {
+                    #         'access': ['system.view_alarmconf'],
+                    #         'icon': 'ios-menu',
+                    #         'title': '告警配置'
+                    #     },
+                    #     'component': 'system/alarm-conf'
+                    # }
+                ]
             },
             {
                 "path": '/alarm',
@@ -192,132 +224,19 @@ class Menu(APIView):
                         },
                         'component': 'system/alarm-info'
                     },
-                    {
-                        'path': 'alarm-conf',
-                        'name': 'alarm-conf',
-                        'meta': {
-                            'access': ['system.view_alarmconf'],
-                            'icon': 'ios-menu',
-                            'title': '告警配置'
-                        },
-                        'component': 'system/alarm-conf'
-                    }
+                    # {
+                    #     'path': 'alarm-conf',
+                    #     'name': 'alarm-conf',
+                    #     'meta': {
+                    #         'access': ['system.view_alarmconf'],
+                    #         'icon': 'ios-menu',
+                    #         'title': '告警配置'
+                    #     },
+                    #     'component': 'system/alarm-conf'
+                    # }
                 ]
             },
-            {
-                "path": '/oracle',
-                "name": 'Oracle',
-                "meta": {
-                    'hideInMenu': 'true',
-                    "icon": 'ios-apps',
-                    "title": 'Oracle数据库监控'
-                },
-                "component": 'Main',
-                "children": [
-                    {
-                        'path': ':tags/view',
-                        'name': 'oracle-view',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': 'Oracle概览',
-                            'access': ['oracle.view_oraclestat'],
-                        },
-                        'component': 'oracle/view'
-                    },
-                    {
-                        'path': ':tags/resource',
-                        'name': 'oracle-resource',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': '资源',
-                            'access': ['oracle.view_oracletablespace'],
-                        },
-                        'component': 'oracle/resource'
-                    },
-                    {
-                        'path': ':tags/resource/tablespace/:tablespace_name',
-                        'name': 'oracle-tablespace',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': '表空间',
-                            'access': ['oracle.view_oracletablespace'],
-                        },
-                        'component': 'oracle/tablespace'
-                    },
-                    {
-                        'path': ':tags/resource/temptablespace/:tablespace_name',
-                        'name': 'oracle-temptablespace',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': '临时表空间',
-                            'access': ['oracle.view_oracletablespace'],
-                        },
-                        'component': 'oracle/temp-tablespace'
-                    },
-                    {
-                        'path': ':tags/resource/undotablespace/:tablespace_name',
-                        'name': 'oracle-undotablespace',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': 'UNDO表空间',
-                            'access': ['oracle.view_oracletablespace'],
-                        },
-                        'component': 'oracle/undo-tablespace'
-                    },
-                    {
-                        'path': ':tags/active-session',
-                        'name': 'oracle-active-session',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': '活动会话',
-                            'access': ['oracle.view_oraclestat'],
-                        },
-                        'component': 'oracle/active-session'
-                    },
-                    {
-                        'path': ':tags/performance',
-                        'name': 'oracle-performance',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': '性能图',
-                            'access': ['oracle.view_oraclestat'],
-                        },
-                        'component': 'oracle/performance'
-                    },
-                    {
-                        'path': ':tags/top-sql',
-                        'name': 'oracle-top-sql',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': 'TOP SQL',
-                            'access': ['oracle.view_oraclestat'],
-                        },
-                        'component': 'oracle/top-sql'
-                    },
-                    {
-                        'path': ':tags/alert-log',
-                        'name': 'oracle-alertlog',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': '日志解析',
-                            'access': ['oracle.view_oraclestat'],
-                        },
-                        'component': 'oracle/alert-log'
-                    },
-                    {
-                        'path': ':tags/table-stats',
-                        'name': 'oracle-tablestats',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': '统计信息',
-                            'access': ['oracle.view_oraclestat'],
-                        },
-                        'component': 'oracle/table-stats'
-                    }
 
-                ],
-
-            },
             {
                 "path": '/linux',
                 "name": 'Linux',
@@ -360,152 +279,6 @@ class Menu(APIView):
                     }
                 ]
             },
-            {
-                "path": '/mysql',
-                "name": 'MySQL',
-                "meta": {
-                    'hideInMenu': 'true',
-                    "icon": 'ios-apps',
-                    "title": 'MySQL数据库监控'
-                },
-                "component": 'Main',
-                "children": [
-                    {
-                        'path': ':tags/view',
-                        'name': 'mysql-view',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': 'MySQL概览',
-                            'access': ['mysql.view_mysqlstat'],
-                        },
-                        'component': 'mysql/view'
-                    },
-                    {
-                        'path': ':tags/myisam',
-                        'name': 'mysql-myisam',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': 'MyISAM',
-                            'access': ['mysql.view_mysqlstat'],
-                        },
-                        'component': 'mysql/myisam'
-                    },
-                    {
-                        'path': ':tags/innodb',
-                        'name': 'mysql-innodb',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': 'Innodb',
-                            'access': ['mysql.view_mysqlstat'],
-                        },
-                        'component': 'mysql/innodb'
-                    },
-                    {
-                        'path': ':tags/alert-log',
-                        'name': 'mysql-alert-log',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': '后台日志',
-                            'access': ['mysql.view_mysqlstat'],
-                        },
-                        'component': 'mysql/alert-log'
-                    },
-                    {
-                        'path': ':tags/slowquery-log',
-                        'name': 'mysql-slowquery-log',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': '慢查询',
-                            'access': ['mysql.view_mysqlstat'],
-                        },
-                        'component': 'mysql/slowquery-log'
-                    }
-                ]
-
-            },
-            {
-                "path": '/redis',
-                "name": 'Redis',
-                "meta": {
-                    'hideInMenu': 'true',
-                    "icon": 'ios-apps',
-                    "title": 'Redis监控'
-                },
-                "component": 'Main',
-                "children": [
-                    {
-                        'path': ':tags/view',
-                        'name': 'redis-view',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': 'Redis概览',
-                            'access': ['rds.view_redisstat'],
-                        },
-                        'component': 'redis/view'
-                    },
-                    {
-                        'path': ':tags/immediate-stats',
-                        'name': 'redis-immediate-stats',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': 'Redis实时状态',
-                            'access': ['rds.view_redisstat'],
-                        },
-                        'component': 'redis/immediate-stats'
-                    },
-                    {
-                        'path': ':tags/config',
-                        'name': 'redis-config',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': 'Redis配置项',
-                            'access': ['rds.view_redisstat'],
-                        },
-                        'component': 'redis/config'
-                    },
-                    {
-                        'path': ':tags/slowlog',
-                        'name': 'redis-slowlog',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': '慢查询分析',
-                            'access': ['rds.view_redisstat'],
-                        },
-                        'component': 'redis/slowlog'
-                    },
-                    {
-                        'path': ':tags/clientlist',
-                        'name': 'redis-clientlist',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': '连接信息',
-                            'access': ['rds.view_redisstat'],
-                        },
-                        'component': 'redis/clientlist'
-                    },
-                    {
-                        'path': ':tags/commandstats',
-                        'name': 'redis-commandstats',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': '命令曲线',
-                            'access': ['rds.view_redisstat'],
-                        },
-                        'component': 'redis/command-stats'
-                    },
-                    {
-                        'path': ':tags/alert-log',
-                        'name': 'redis-alert-log',
-                        'meta': {
-                            'hideInMenu': 'true',
-                            'title': '后台日志',
-                            'access': ['rds.view_redisstat'],
-                        },
-                        'component': 'redis/alert-log'
-                    },
-                ]
-
-            }
             # {
             #     "path": '/multilevel',
             #     "name": 'multilevel',
@@ -560,9 +333,24 @@ class ApiAlarmInfo(generics.ListCreateAPIView):
             return AlarmInfo.objects.filter(tags=tags).order_by('id')
         else:
             print('index return alarm info ')
-            return AlarmInfo.objects.all()
+            return AlarmInfo.objects.all().order_by('-alarm_time')
     serializer_class = AlarmInfoSerializer
+    print(serializer_class)
     permission_classes = (permissions.DjangoModelPermissions,)
+
+class ApiProcessInfo(generics.ListCreateAPIView):
+    def get_queryset(self):
+        tags = self.request.query_params.get('tags', None)
+        if tags:
+            return ProcessInfo.objects.filter(tags=tags).order_by('id')
+        else:
+            print('index return alarm info ')
+            # return ProcessInfo.objects.all().order_by('-alarm_time')
+            return ProcessInfo.objects.all()
+    serializer_class = ProcessInfoSerializer
+    print(serializer_class)
+    permission_classes = (permissions.DjangoModelPermissions,)
+
 
 class ApiAlarmInfoHis(generics.ListCreateAPIView):
     queryset = AlarmInfo.objects.get_queryset().order_by('-id')
